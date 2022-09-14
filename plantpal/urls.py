@@ -19,13 +19,14 @@ from django.urls import path
 from django.conf.urls.static import static
 from django.conf import settings
 from rest_framework import routers
-from plantpalapi.views import register_user, login_user, PlantPalView, SwapView, PlantView, WaterSpanView
+from plantpalapi.views import register_user, login_user, PlantPalView, SwapView, PlantView, WaterSpanView, SunTypeView
 
 router = routers.DefaultRouter(trailing_slash=False)
 router.register(r'pals', PlantPalView, 'pal')
 router.register(r'swaps', SwapView, 'swap')
 router.register(r'plants', PlantView, 'plant')
 router.register(r'waterspans', WaterSpanView, 'waterspan')
+router.register(r'suntypes', SunTypeView, 'suntype')
 
 urlpatterns = [
     path('', include(router.urls)),

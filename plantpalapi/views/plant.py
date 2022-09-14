@@ -57,6 +57,29 @@ class PlantView(ViewSet):
         serializer = PlantSerializer(plant)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
+    def update(self, request, pk):
+        """Handle PUT requests for a plant
+
+        Returns:
+        Response -- Empty body with 204 status code
+        """
+
+        plant = Plant.objects.get(pk=pk)
+        plant.plantPhoto = request.data["plantPhoto"]
+        plant.name = request.data["name"]
+        plant.water = request.data["water"]
+        plant.lastWatered = request.data["lastWatered"]
+        plant.petToxic = request.data["petToxic"]
+        plant.notes = request.data["notes"]
+
+        sunType = SunType.objects.get(pk=request.data["sunType"])
+        plant.sunType = sunType
+        waterSpanId = WaterSpan.objects.get(pk=request.data["waterSpanId"])
+        plant.waterSpanId = waterSpanId
+        plant.save()
+
+        return Response(None, status=status.HTTP_204_NO_CONTENT)
+
 
 class PlantSerializer(serializers.ModelSerializer):
     """"JSON serializer for plants
