@@ -1,0 +1,12 @@
+[
+    {
+        "model": "plantpalapi.plantPalUser",
+        "pk": 1,
+        "fields": {
+            "user": 1,
+            "profilePic": "",
+            "address": "204 Here St Nashville,TN 37115", 
+            "bio": "Me"
+        }
+    }
+]

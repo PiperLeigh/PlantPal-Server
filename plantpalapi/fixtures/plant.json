@@ -1,0 +1,17 @@
+[
+    {
+        "model": "plantpalapi.plant",
+        "pk": 1,
+        "fields": {
+            "plantPhoto": "",
+            "name": "White Butterfly Syngonium",
+            "water": 1,
+            "waterSpanId": 1,
+            "sunType": 1,
+            "lastWatered": "2022-09-13",
+            "petToxic": true,
+            "notes": ""
+        }
+    }
+
+]

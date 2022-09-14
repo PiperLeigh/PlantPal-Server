@@ -1,0 +1,23 @@
+[
+    {
+        "model": "plantpalapi.waterspan",
+        "pk": 1,
+        "fields": {
+            "label": "week"
+        }
+    },
+    {
+        "model": "plantpalapi.waterspan",
+        "pk": 2,
+        "fields": {
+            "label": "bi-weekly"
+        }
+    },
+    {
+        "model": "plantpalapi.waterspan",
+        "pk": 3,
+        "fields": {
+            "label": "month"
+        }
+    }
+]

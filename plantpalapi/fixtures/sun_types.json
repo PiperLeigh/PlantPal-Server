@@ -1,0 +1,23 @@
+[
+    {
+        "model": "plantpalapi.suntype",
+        "pk": 1,
+        "fields": {
+            "label": "Direct Sunlight"
+        }
+    },
+    {
+        "model": "plantpalapi.suntype",
+        "pk": 2,
+        "fields": {
+            "label": "Indirect Sunlight"
+        }
+    },
+    {
+        "model": "plantpalapi.suntype",
+        "pk": 3,
+        "fields": {
+            "label": "Semi-shade"
+        }
+    }
+]

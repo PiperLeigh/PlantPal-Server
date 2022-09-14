@@ -1,0 +1,15 @@
+[
+    {
+        "model": "plantpalapi.swap",
+        "pk": 1,
+        "fields": {
+            "coverPhoto": "",
+            "host": 1,
+            "location": "426 Maypop Lane Madison, TN 37115",
+            "date": "2022-09-23",
+            "time": "17:30",
+            "description": "Hey pals We’re having a swap down here at the farm before winter hits. Kombucha will be provided. Please bring any plant propagations, plant divisions, or other goods you would like to trade with pals!"
+        }
+    }
+
+]
