@@ -80,6 +80,11 @@ class PlantView(ViewSet):
 
         return Response(None, status=status.HTTP_204_NO_CONTENT)
 
+    def destroy(self, request, pk):
+        plant = Plant.objects.get(pk=pk)
+        plant.delete()
+        return Response(None, status=status.HTTP_204_NO_CONTENT)
+
 
 class PlantSerializer(serializers.ModelSerializer):
     """"JSON serializer for plants
