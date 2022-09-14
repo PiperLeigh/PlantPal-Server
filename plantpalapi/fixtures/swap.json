@@ -3,6 +3,7 @@
         "model": "plantpalapi.swap",
         "pk": 1,
         "fields": {
+            "title": "Maypop Farm Swap",
             "coverPhoto": "",
             "host": 1,
             "location": "426 Maypop Lane Madison, TN 37115",

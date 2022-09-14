@@ -2,6 +2,7 @@ from django.db import models
 from .plantPalUser import PlantPalUser
 
 class Swap(models.Model):
+    title = models.CharField(max_length=60)
     coverPhoto = models.ImageField(
         upload_to='coverphotos', height_field=None,
         width_field=None, max_length=None, null=True)
@@ -11,3 +12,4 @@ class Swap(models.Model):
     time = models.TimeField()
     description = models.CharField(max_length=300)
     attendees = models.ManyToManyField("PlantPalUser", related_name='swaps')
+    
