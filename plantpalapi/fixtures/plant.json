@@ -3,6 +3,7 @@
         "model": "plantpalapi.plant",
         "pk": 1,
         "fields": {
+            "userId": 1,
             "plantPhoto": "",
             "name": "White Butterfly Syngonium",
             "water": 1,
