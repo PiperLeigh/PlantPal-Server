@@ -3,6 +3,11 @@ from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework import serializers, status
 from plantpalapi.models import Plant, SunType, WaterSpan, PlantPalUser
+import uuid
+import base64
+from django.core.files.base import ContentFile
+
+
 
 class PlantView(ViewSet):
     """Plant view - list of plants
@@ -35,17 +40,17 @@ class PlantView(ViewSet):
         Returns
             Response -- JSON serialized plant instance
         """
-        #Getting the gamer that is logged in using their aut token
+
         user = PlantPalUser.objects.get(user=request.auth.user)
-        #Get game type object from data base to make sure game type user is trying to add exists
-        #Data passed in from the client is held in the request.data dictionary
-        #Whichever keys are used on the request.data must match what the client is passing to the server.
         sun_type = SunType.objects.get(pk=request.data["sunType"])
         water_span = WaterSpan.objects.get(pk=request.data["waterSpanId"])
+        format, imgstr = request.data["plantPhoto"].split(';base64,')
+        ext = format.split('/')[-1]
+        data = ContentFile(base64.b64decode(imgstr), name=f'{uuid.uuid4()}.{ext}')
 
         plant = Plant.objects.create(
             userId=user,
-            plantPhoto=request.data["plantPhoto"],
+            plantPhoto=data,
             name=request.data["name"],
             water=request.data["water"],
             waterSpanId=water_span,
@@ -64,8 +69,12 @@ class PlantView(ViewSet):
         Response -- Empty body with 204 status code
         """
 
+        format, imgstr = request.data["plantPhoto"].split(';base64,')
+        ext = format.split('/')[-1]
+        data = ContentFile(base64.b64decode(imgstr), name=f'{uuid.uuid4()}.{ext}')
+
         plant = Plant.objects.get(pk=pk)
-        plant.plantPhoto = request.data["plantPhoto"]
+        plant.plantPhoto = data
         plant.name = request.data["name"]
         plant.water = request.data["water"]
         plant.lastWatered = request.data["lastWatered"]

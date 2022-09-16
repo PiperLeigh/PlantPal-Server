@@ -2,7 +2,10 @@ from django.http import HttpResponseServerError
 from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework import serializers, status
-from plantpalapi.models import Swap, PlantPalUser, swap
+from plantpalapi.models import Swap, PlantPalUser
+import uuid
+import base64
+from django.core.files.base import ContentFile
 
 class SwapView(ViewSet):
     """Swap view - list of plant pal swaps
@@ -34,10 +37,13 @@ class SwapView(ViewSet):
         """
         #Getting the gamer that is logged in using their aut token
         host = PlantPalUser.objects.get(user=request.auth.user)
+        format, imgstr = request.data["coverPhoto"].split(';base64,')
+        ext = format.split('/')[-1]
+        data = ContentFile(base64.b64decode(imgstr), name=f'{uuid.uuid4()}.{ext}')
 
         swap = Swap.objects.create(
             title=request.data["title"],
-            coverPhoto=request.data["coverPhoto"],
+            coverPhoto=data,
             host=host,
             location=request.data["location"],
             date=request.data["date"],
@@ -54,10 +60,13 @@ class SwapView(ViewSet):
         Response -- Empty body with 204 status code
         """
         host = PlantPalUser.objects.get(user=request.auth.user)
+        format, imgstr = request.data["coverPhoto"].split(';base64,')
+        ext = format.split('/')[-1]
+        data = ContentFile(base64.b64decode(imgstr), name=f'{uuid.uuid4()}.{ext}')
 
         swap = Swap.objects.get(pk=pk)
         swap.title = request.data["title"]
-        swap.coverPhoto = request.data["coverPhoto"]
+        swap.coverPhoto = data
         swap.host = host
         swap.location = request.data["location"]
         swap.date = request.data["date"]
@@ -79,4 +88,4 @@ class SwapSerializer(serializers.ModelSerializer):
     class Meta:
         model = Swap
         fields = ('id', 'title', 'coverPhoto', 'host', 'location', 'date', 'time', 'description', 'attendees')
-        depth = 1
+        depth = 2
