@@ -59,14 +59,18 @@ class SwapView(ViewSet):
         Returns:
         Response -- Empty body with 204 status code
         """
-        host = PlantPalUser.objects.get(user=request.auth.user)
-        format, imgstr = request.data["coverPhoto"].split(';base64,')
-        ext = format.split('/')[-1]
-        data = ContentFile(base64.b64decode(imgstr), name=f'{uuid.uuid4()}.{ext}')
+        swap = Swap.objects.get(pk=pk)
 
+        try:
+            format, imgstr = request.data["event_image_url"].split(';base64,')
+            ext = format.split('/')[-1]
+            data = ContentFile(base64.b64decode(imgstr), name=f'{uuid.uuid4()}.{ext}')
+            swap.coverPhoto = data #matches above
+        except:
+            pass
+        host = PlantPalUser.objects.get(user=request.auth.user)
         swap = Swap.objects.get(pk=pk)
         swap.title = request.data["title"]
-        swap.coverPhoto = data
         swap.host = host
         swap.location = request.data["location"]
         swap.date = request.data["date"]
