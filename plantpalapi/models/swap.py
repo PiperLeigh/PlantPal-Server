@@ -13,3 +13,11 @@ class Swap(models.Model):
     description = models.CharField(max_length=300)
     attendees = models.ManyToManyField("PlantPalUser", related_name='swaps')
     
+
+    @property
+    def attending(self):
+        return self.__joined
+
+    @attending.setter
+    def attending(self, value):
+        self.__joined = value
