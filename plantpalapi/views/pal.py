@@ -15,7 +15,7 @@ class PlantPalView(ViewSet):
         """Handle GET requests for single pal
         """
         try:
-            pal = PlantPalUser.objects.get(pk=pk)
+            pal = PlantPalUser.objects.get(user=request.auth.user)
             serializer = PalSerializer(pal)
             return Response(serializer.data)
         except PlantPalUser.DoesNotExist as ex:
@@ -55,16 +55,22 @@ class PlantPalView(ViewSet):
         Returns:
         Response -- Empty body with 204 status code
         """
-        format, imgstr = request.data["profilePic"].split(';base64,')
-        ext = format.split('/')[-1]
-        data = ContentFile(base64.b64decode(imgstr), name=f'{uuid.uuid4()}.{ext}')
+        pal = PlantPalUser.objects.get(user=request.auth.user)
+        try:
+            format, imgstr = request.data["profilePic"].split(';base64,')
+            ext = format.split('/')[-1]
+            data = ContentFile(base64.b64decode(imgstr),
+                               name=f'{uuid.uuid4()}.{ext}')
+            pal.profilePic = data  # matches above
+        except:
+            pass
 
-        pal = PlantPalUser.objects.get(pk=pk)
-        pal.profilePic = data
         pal.address = request.data["address"]
         pal.bio = request.data["bio"]
 
         pal.save()
+        request.auth.user.email = request.data["email"]
+        request.auth.user.save()
 
         return Response(None, status=status.HTTP_204_NO_CONTENT)
 

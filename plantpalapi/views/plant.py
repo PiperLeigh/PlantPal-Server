@@ -78,13 +78,6 @@ class PlantView(ViewSet):
             plant.plantPhoto = data #matches above
         except:
             pass
-        # data = request.data["plantPhoto"]
-        # if request.data["plantPhoto"].startswith("/media"):
-        #     pass
-        # else:
-        #     format, imgstr = request.data["plantPhoto"].split(';base64,')
-        #     ext = format.split('/')[-1]
-        #     data = ContentFile(base64.b64decode(imgstr), name=f'{uuid.uuid4()}.{ext}')
 
         plant = Plant.objects.get(pk=pk)
         plant.plantPhoto = data
