@@ -2,7 +2,7 @@ from django.http import HttpResponseServerError
 from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework import serializers, status
-from plantpalapi.models import Swap, PlantPalUser, plantPalUser, swap
+from plantpalapi.models import Swap, PlantPalUser
 import uuid
 import base64
 from django.core.files.base import ContentFile
@@ -67,17 +67,15 @@ class SwapView(ViewSet):
         Response -- Empty body with 204 status code
         """
         swap = Swap.objects.get(pk=pk)
-
+        host = PlantPalUser.objects.get(user=request.auth.user)
         try:
-            format, imgstr = request.data["event_image_url"].split(';base64,')
+            format, imgstr = request.data["coverPhoto"].split(';base64,')
             ext = format.split('/')[-1]
             data = ContentFile(base64.b64decode(imgstr),
                                name=f'{uuid.uuid4()}.{ext}')
             swap.coverPhoto = data  # matches above
         except:
             pass
-        host = PlantPalUser.objects.get(user=request.auth.user)
-        swap = Swap.objects.get(pk=pk)
         swap.title = request.data["title"]
         swap.host = host
         swap.location = request.data["location"]

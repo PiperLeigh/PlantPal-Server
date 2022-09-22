@@ -72,7 +72,7 @@ class PlantView(ViewSet):
         """
         plant = Plant.objects.get(pk=pk)
         try:
-            format, imgstr = request.data["event_image_url"].split(';base64,')
+            format, imgstr = request.data["plantPhoto"].split(';base64,')
             ext = format.split('/')[-1]
             data = ContentFile(base64.b64decode(imgstr), name=f'{uuid.uuid4()}.{ext}')
             plant.plantPhoto = data #matches above
@@ -80,7 +80,6 @@ class PlantView(ViewSet):
             pass
 
         plant = Plant.objects.get(pk=pk)
-        plant.plantPhoto = data
         plant.name = request.data["name"]
         plant.water = request.data["water"]
         plant.lastWatered = request.data["lastWatered"]
@@ -106,5 +105,5 @@ class PlantSerializer(serializers.ModelSerializer):
     """
     class Meta:
         model = Plant
-        fields = ('id', 'plantPhoto', 'name', 'water', 'waterSpanId', 'sunType', 'lastWatered', 'petToxic', 'notes')
+        fields = ('id', 'userId', 'plantPhoto', 'name', 'water', 'waterSpanId', 'sunType', 'lastWatered', 'petToxic', 'notes')
         depth = 3

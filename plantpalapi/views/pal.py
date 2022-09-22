@@ -6,6 +6,8 @@ from plantpalapi.models import PlantPalUser
 import uuid
 import base64
 from django.core.files.base import ContentFile
+from rest_framework.decorators import action
+
 
 class PlantPalView(ViewSet):
     """Pals view - list of plant pal users
@@ -14,6 +16,15 @@ class PlantPalView(ViewSet):
     def retrieve(self, request, pk):
         """Handle GET requests for single pal
         """
+        try:
+            pal = PlantPalUser.objects.get(pk=pk)
+            serializer = PalSerializer(pal)
+            return Response(serializer.data)
+        except PlantPalUser.DoesNotExist as ex:
+            return Response({'message': ex.args[0]}, status=status.HTTP_404_NOT_FOUND)
+
+    @action(methods=['get'], detail=False)
+    def myProfile(self, request):
         try:
             pal = PlantPalUser.objects.get(user=request.auth.user)
             serializer = PalSerializer(pal)
@@ -70,6 +81,9 @@ class PlantPalView(ViewSet):
 
         pal.save()
         request.auth.user.email = request.data["email"]
+        request.auth.user.username = request.data["username"]
+        request.auth.user.first_name = request.data["first_name"]
+        request.auth.user.last_name = request.data["last_name"]
         request.auth.user.save()
 
         return Response(None, status=status.HTTP_204_NO_CONTENT)
@@ -80,5 +94,5 @@ class PalSerializer(serializers.ModelSerializer):
     """
     class Meta:
         model = PlantPalUser
-        fields = ('id', 'user', 'profilePic', 'address', 'bio')
+        fields = ('id', 'user', 'profilePic', 'address', 'bio', 'plants')
         depth = 2

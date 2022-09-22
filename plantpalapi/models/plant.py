@@ -5,7 +5,7 @@ from datetime import date
 from .plantPalUser import PlantPalUser
 
 class Plant(models.Model):
-    userId = models.ForeignKey(PlantPalUser, on_delete=models.CASCADE)
+    userId = models.ForeignKey(PlantPalUser, on_delete=models.CASCADE, related_name="plants")
     plantPhoto = models.ImageField(
         upload_to='plantphotos', height_field=None,
         width_field=None, max_length=None, null=True)
@@ -16,3 +16,5 @@ class Plant(models.Model):
     lastWatered = models.DateField(default=date.today)
     petToxic = models.BooleanField()
     notes = models.CharField(max_length=300)
+
+    
